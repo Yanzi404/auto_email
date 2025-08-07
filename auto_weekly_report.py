@@ -1,6 +1,8 @@
 import imaplib
 import email
 import smtplib
+from email.mime.image import MIMEImage
+
 import requests
 from datetime import datetime, timedelta, timezone
 from email.header import decode_header
@@ -83,7 +85,14 @@ class EmailSender:
         if cc:
             msg['Cc'] = cc
         msg['Subject'] = subject
-        msg.attach(MIMEText(content, 'plain', 'utf-8'))
+
+        msg.attach(MIMEText(content, 'html'))
+
+        # 添加嵌入图片
+        with open('template/mengxiang.PNG', 'rb') as f:
+            img = MIMEImage(f.read())
+            img.add_header('Content-ID', '<image1>')  # 这里的image1对应HTML中的cid:image1
+            msg.attach(img)
         return msg
 
     def save_to_drafts(self, subject: str, content: str, to: Optional[str] = None, cc: Optional[str] = None) -> bool:
@@ -314,9 +323,9 @@ class AIAssistant:
             response = requests.post(self.api_url, headers=headers, json=data, timeout=30)
 
             if response.status_code == 200:
-                content = response.json()['choices'][0]['message']['content']
+                ai_content = response.json()['choices'][0]['message']['content']
                 logger.info("AI成功生成周报")
-                return content
+                return ai_content
             else:
                 error_msg = f"AI请求失败: HTTP {response.status_code}, {response.text}"
                 logger.error(error_msg)
@@ -394,14 +403,22 @@ def main():
         # 生成周报
         logger.info("开始生成周报")
         assistant = AIAssistant(CONFIG["ai"])
-        weekly_summary = assistant.generate_weekly_summary(daily_reports)
+
+        ai_content = assistant.generate_weekly_summary(daily_reports)
 
         # 打印周报内容
         print("\n" + "=" * 50)
         print("生成的周报内容:")
         print("=" * 50)
-        print(weekly_summary)
+        print(ai_content)
         print("=" * 50 + "\n")
+
+        # 使用模板生成周报
+        with open('template/template.html', 'r', encoding='utf-8') as file:
+            html_content = file.read()
+
+        # 将AI生成的内容插入到模板中
+        weekly_summary = html_content.format(weekly_summary=ai_content)
 
         # 保存周报到草稿箱
         save_to_drafts = input("是否保存周报到草稿箱？(y/n): ").strip().lower() == 'y'

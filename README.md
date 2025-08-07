@@ -10,6 +10,10 @@
 - 可选择将生成的周报保存到草稿箱
 - 完善的错误处理和日志记录
 
+## 前置条件
+
+- 已开启邮箱的IMAP和SMTP服务
+
 ## 安装步骤
 
 1. 克隆或下载本项目到本地
@@ -40,6 +44,8 @@ python auto_weekly_report.py
 
 ## 配置说明
 
+在`template`文件夹中配置周报格式模版
+
 在`.env`文件中配置以下参数：
 
 ### 邮箱配置
@@ -61,6 +67,7 @@ python auto_weekly_report.py
 - `REPORT_TITLE_DATE_FORMAT`: 周报标题中日期的格式，默认为"%Y-%m-%d"，生成如"2023-05-26"的日期
 - `REPORT_DEFAULT_TO`: 默认收件人邮箱地址
 - `REPORT_DEFAULT_CC`: 默认抄送人邮箱地址，多个邮箱用逗号分隔
+
 
 ## 注意事项
 
