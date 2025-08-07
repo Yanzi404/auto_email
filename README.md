@@ -21,9 +21,12 @@
    ```
    pip install -r requirements.txt
    ```
-3. 复制环境变量模板并填写配置：
+3. 复制环境变量模板和邮件内容模版：
    ```
    cp .env.example .env
+   ```
+   ```
+   cp template/template.html.example template/template.html
    ```
    然后编辑`.env`文件，填入您的邮箱和AI服务配置
 
