@@ -63,8 +63,8 @@ python auto_weekly_report.py
 - `AI_SYSTEM_PROMPT`: 系统提示词
 
 ### 周报配置
-- `REPORT_TITLE_PREFIX`: 周报标题前缀，默认为"周报-长沙研发中心-埃克思-"
-- `REPORT_TITLE_DATE_FORMAT`: 周报标题中日期的格式，默认为"%Y-%m-%d"，生成如"2023-05-26"的日期
+- `REPORT_TITLE_PREFIX`: 周报标题前缀
+- `REPORT_TITLE_DATE_FORMAT`: 周报标题中日期的格式，默认为"%Y-%m-%d"
 - `REPORT_DEFAULT_TO`: 默认收件人邮箱地址
 - `REPORT_DEFAULT_CC`: 默认抄送人邮箱地址，多个邮箱用逗号分隔
 
