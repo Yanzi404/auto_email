@@ -12,7 +12,7 @@ from .logger import logger
 
 class EmailSender:
     """邮件发送类，负责创建和发送邮件"""
-    
+
     def __init__(self, config: dict):
         """
         初始化邮件发送器
@@ -25,11 +25,11 @@ class EmailSender:
         self.password = config["password"]
         self.drafts_folder = config["drafts"]
         self.imap_server = config["server"]
-        
+
         # 验证必要的配置
         if not all([self.smtp_server, self.username, self.password]):
             raise ValueError("SMTP配置不完整，请检查环境变量设置")
-    
+
     def create_message(self, subject: str, content: str, to: Optional[str] = None,
                        cc: Optional[str] = None) -> MIMEMultipart:
         """
@@ -51,9 +51,9 @@ class EmailSender:
         if cc:
             msg['Cc'] = cc
         msg['Subject'] = subject
-        
+
         msg.attach(MIMEText(content, 'html'))
-        
+
         # 添加嵌入图片
         try:
             with open('template/mengxiang.PNG', 'rb') as f:
@@ -64,10 +64,10 @@ class EmailSender:
             logger.warning("未找到图片文件 template/mengxiang.PNG，跳过图片附件")
         except Exception as e:
             logger.error(f"添加图片附件时出错: {str(e)}")
-        
+
         return msg
-    
-    def save_to_drafts(self, subject: str, content: str, to: Optional[str] = None, 
+
+    def save_to_drafts(self, subject: str, content: str, to: Optional[str] = None,
                        cc: Optional[str] = None) -> bool:
         """
         创建邮件并保存到草稿箱
@@ -91,7 +91,7 @@ class EmailSender:
         except Exception as e:
             logger.error(f"保存到草稿箱失败: {str(e)}")
             return False
-    
+
     def _save_to_drafts_folder(self, msg: MIMEMultipart) -> None:
         """
         保存邮件到草稿箱
