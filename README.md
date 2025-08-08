@@ -35,7 +35,7 @@
 直接运行脚本：
 
 ```
-python auto_weekly_report.py
+python main.py
 ```
 
 程序会自动：
